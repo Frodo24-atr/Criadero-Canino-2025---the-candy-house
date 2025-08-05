@@ -25,7 +25,7 @@ const escribirComentarios = (comentarios) => {
   }
 };
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method === 'GET') {
     // Obtener todos los comentarios
     try {
@@ -38,9 +38,16 @@ export default function handler(req, res) {
   else if (req.method === 'POST') {
     // Crear nuevo comentario
     try {
-      const { nombre, comentario, calificacion, fecha, aprobado = false } = req.body;
+      const { 
+        nombre, 
+        comentario, 
+        calificacion, 
+        fecha, 
+        email,
+        aprobado = false 
+      } = req.body;
       
-      if (!nombre || !comentario || !calificacion) {
+      if (!nombre || !comentario || !calificacion || !email) {
         return res.status(400).json({ error: 'Faltan campos requeridos' });
       }
 
@@ -53,6 +60,7 @@ export default function handler(req, res) {
         mensaje: comentario,
         calificacion: parseInt(calificacion),
         fecha: fecha || new Date().toISOString(),
+        email,
         aprobado
       };
 

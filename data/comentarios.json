@@ -16,14 +16,5 @@
     "calificacion": 5,
     "fecha": "2025-01-15T14:30:00.000Z",
     "aprobado": true
-  },
-  {
-    "id": 3,
-    "nombre": "Ana López",
-    "email": "ana@email.com",
-    "mensaje": "Mi Schnauzer recibió el mejor cuidado posible.",
-    "calificacion": 5,
-    "fecha": "2025-02-01T10:15:00.000Z",
-    "aprobado": true
   }
 ]

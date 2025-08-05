@@ -1,22 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FaStar, FaQuoteLeft, FaGoogle } from 'react-icons/fa';
+import { FaStar, FaQuoteLeft, FaGoogle, FaSignInAlt } from 'react-icons/fa';
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 export default function Testimonios() {
+  const { data: session, status } = useSession();
   const [comentarios, setComentarios] = useState([]);
   const [promedioCalificacion, setPromedioCalificacion] = useState(0);
   const [totalComentarios, setTotalComentarios] = useState(0);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [nuevoComentario, setNuevoComentario] = useState({
     nombre: '',
     comentario: '',
     calificacion: 5
   });
   const [showForm, setShowForm] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     cargarComentarios();
-  }, []);
+    // Actualizar nombre del usuario cuando inicia sesión
+    if (session?.user?.name) {
+      setNuevoComentario(prev => ({
+        ...prev,
+        nombre: session.user.name
+      }));
+    }
+  }, [session]);
 
   const cargarComentarios = async () => {
     try {
@@ -38,16 +47,22 @@ export default function Testimonios() {
   };
 
   const handleLoginWithGoogle = () => {
-    setIsLoggedIn(true);
-    setNuevoComentario({
-      ...nuevoComentario,
-      nombre: 'Usuario de Google'
-    });
-    alert('Login simulado exitoso. En producción, usar Google Auth.');
+    signIn('google');
+  };
+
+  const handleLogout = () => {
+    signOut();
+    setShowForm(false);
   };
 
   const handleSubmitComentario = async (e) => {
     e.preventDefault();
+    if (!session) {
+      alert('Debes iniciar sesión para comentar');
+      return;
+    }
+
+    setIsSubmitting(true);
     try {
       const response = await fetch('/api/comentarios', {
         method: 'POST',
@@ -56,18 +71,31 @@ export default function Testimonios() {
         },
         body: JSON.stringify({
           ...nuevoComentario,
+          email: session.user.email,
+          usuario_id: session.user.email, // Usar email como ID único
+          avatar: session.user.image,
           fecha: new Date().toISOString(),
           aprobado: false
         }),
       });
 
       if (response.ok) {
-        alert('Comentario enviado! Será revisado antes de publicarse.');
-        setNuevoComentario({ nombre: 'Usuario de Google', comentario: '', calificacion: 5 });
+        alert('¡Comentario enviado exitosamente! Será revisado antes de publicarse.');
+        setNuevoComentario({ 
+          nombre: session.user.name, 
+          comentario: '', 
+          calificacion: 5 
+        });
         setShowForm(false);
+        cargarComentarios(); // Recargar comentarios
+      } else {
+        throw new Error('Error al enviar comentario');
       }
     } catch (error) {
       console.error('Error al enviar comentario:', error);
+      alert('Error al enviar el comentario. Por favor, inténtalo de nuevo.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -126,29 +154,58 @@ export default function Testimonios() {
             Lo que dicen nuestras familias sobre nosotros
           </p>
 
-          {!isLoggedIn ? (
+          {status === "loading" ? (
+            <div className="flex items-center justify-center mb-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-500"></div>
+              <span className="ml-2 text-gray-600">Cargando...</span>
+            </div>
+          ) : !session ? (
             <motion.button
               onClick={handleLoginWithGoogle}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-semibold flex items-center space-x-2 mx-auto mb-8 transition duration-300"
+              className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg font-semibold flex items-center space-x-2 mx-auto mb-8 transition duration-300 shadow-lg"
             >
               <FaGoogle className="w-5 h-5" />
               <span>Iniciar sesión con Google para comentar</span>
             </motion.button>
           ) : (
-            <motion.button
-              onClick={() => setShowForm(!showForm)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-lg font-semibold mx-auto mb-8 transition duration-300"
-            >
-              {showForm ? 'Cancelar' : 'Escribir reseña'}
-            </motion.button>
+            <div className="flex flex-col items-center space-y-4 mb-8">
+              <div className="flex items-center space-x-4 bg-white rounded-lg p-4 shadow-md">
+                {session.user.image && (
+                  <img 
+                    src={session.user.image} 
+                    alt="Avatar" 
+                    className="w-10 h-10 rounded-full"
+                  />
+                )}
+                <div className="text-left">
+                  <p className="font-semibold text-gray-800">{session.user.name}</p>
+                  <p className="text-sm text-gray-600">{session.user.email}</p>
+                </div>
+                <motion.button
+                  onClick={handleLogout}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="text-gray-600 hover:text-red-600 transition duration-300"
+                  title="Cerrar sesión"
+                >
+                  <FaSignInAlt className="w-4 h-4" />
+                </motion.button>
+              </div>
+              <motion.button
+                onClick={() => setShowForm(!showForm)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-amber-500 hover:bg-amber-600 text-white px-6 py-3 rounded-lg font-semibold transition duration-300 shadow-lg"
+              >
+                {showForm ? 'Cancelar' : 'Escribir reseña'}
+              </motion.button>
+            </div>
           )}
         </motion.div>
 
-        {showForm && isLoggedIn && (
+        {showForm && session && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
@@ -157,6 +214,20 @@ export default function Testimonios() {
           >
             <h3 className="text-2xl font-bold mb-6 text-gray-800">Escribir una reseña</h3>
             <form onSubmit={handleSubmitComentario}>
+              <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Nombre
+                </label>
+                <input
+                  type="text"
+                  value={nuevoComentario.nombre}
+                  onChange={(e) => setNuevoComentario({...nuevoComentario, nombre: e.target.value})}
+                  required
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 bg-gray-50"
+                  readOnly
+                />
+                <p className="text-xs text-gray-500 mt-1">Nombre obtenido de tu cuenta de Google</p>
+              </div>
               <div className="mb-6">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Calificación
@@ -183,9 +254,14 @@ export default function Testimonios() {
               </div>
               <button
                 type="submit"
-                className="w-full bg-amber-500 hover:bg-amber-600 text-white py-3 px-6 rounded-lg font-semibold transition duration-300"
+                disabled={isSubmitting}
+                className={`w-full py-3 px-6 rounded-lg font-semibold transition duration-300 ${
+                  isSubmitting 
+                    ? 'bg-gray-400 cursor-not-allowed' 
+                    : 'bg-amber-500 hover:bg-amber-600 text-white'
+                }`}
               >
-                Enviar reseña
+                {isSubmitting ? 'Enviando...' : 'Enviar reseña'}
               </button>
             </form>
           </motion.div>
@@ -204,14 +280,30 @@ export default function Testimonios() {
               <FaQuoteLeft className="text-amber-500 w-8 h-8 mb-4 opacity-20 absolute top-6 right-6" />
 
               <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                  {testimonio.nombre.charAt(0).toUpperCase()}
+                <div className="w-12 h-12 rounded-full overflow-hidden mr-4">
+                  {testimonio.avatar ? (
+                    <img 
+                      src={testimonio.avatar} 
+                      alt={testimonio.nombre}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-bold text-lg">
+                      {testimonio.nombre.charAt(0).toUpperCase()}
+                    </div>
+                  )}
                 </div>
-                <div className="ml-4">
+                <div>
                   <h4 className="font-semibold text-gray-800">{testimonio.nombre}</h4>
                   <div className="flex items-center mt-1">
                     {renderStars(testimonio.calificacion)}
                   </div>
+                  {testimonio.email && (
+                    <div className="flex items-center mt-1">
+                      <FaGoogle className="w-3 h-3 text-blue-500 mr-1" />
+                      <span className="text-xs text-gray-500">Cuenta verificada</span>
+                    </div>
+                  )}
                 </div>
               </div>
 
