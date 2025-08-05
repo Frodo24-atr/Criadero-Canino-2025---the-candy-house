@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { FaArrowRight, FaPaw } from 'react-icons/fa';
 
@@ -54,14 +55,17 @@ export default function GaleriaRazas() {
               <div className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2">
                 {/* Imagen */}
                 <div className="relative h-80 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center">
-                    <div className="text-center text-gray-600">
-                      <FaPaw className="w-16 h-16 mx-auto mb-4 text-amber-500" />
-                      <p className="text-lg font-medium">{raza.nombre}</p>
-                      <p className="text-sm">(Imagen próximamente)</p>
-                    </div>
+                  <Image
+                    src={raza.imagen}
+                    alt={raza.nombre}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                  <div className="absolute bottom-4 left-6 text-white z-10">
+                    <h3 className="text-xl font-bold">{raza.nombre}</h3>
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
 
                 {/* Contenido */}

@@ -1,142 +1,143 @@
 import React, { useState } from 'react';
+import { useSession, signOut, getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
+import { FaUser, FaSignOutAlt, FaCog, FaComments, FaChartBar, FaImages } from 'react-icons/fa';
+import { motion } from 'framer-motion';
 
 export default function Admin() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [credentials, setCredentials] = useState({
-    username: '',
-    password: ''
-  });
-  const [error, setError] = useState('');
+  const { data: session, status } = useSession();
   const router = useRouter();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(credentials),
-      });
-
-      if (response.ok) {
-        setIsLoggedIn(true);
-        setError('');
-      } else {
-        setError('Credenciales incorrectas');
-      }
-    } catch (error) {
-      setError('Error de conexión');
-    }
-  };
-
-  const handleChange = (e) => {
-    setCredentials({
-      ...credentials,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  if (!isLoggedIn) {
+  // Mientras se carga la sesión
+  if (status === "loading") {
     return (
       <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-          <h1 className="text-2xl font-bold text-center mb-6">Panel de Administración</h1>
-          
-          {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-              {error}
-            </div>
-          )}
-          
-          <form onSubmit={handleLogin}>
-            <div className="mb-4">
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
-                Usuario
-              </label>
-              <input
-                type="text"
-                id="username"
-                name="username"
-                value={credentials.username}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            
-            <div className="mb-6">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Contraseña
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                value={credentials.password}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-300"
-            >
-              Iniciar Sesión
-            </button>
-          </form>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Cargando...</p>
         </div>
       </div>
     );
   }
 
+  // Si no está autenticado, redirigir al login
+  if (status === "unauthenticated") {
+    router.push('/admin/login');
+    return null;
+  }
+
+  const handleSignOut = () => {
+    signOut({ callbackUrl: '/' });
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
-      <div className="bg-white shadow">
+      <div className="bg-white shadow-lg">
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold">Panel de Administración</h1>
-            <button
-              onClick={() => setIsLoggedIn(false)}
-              className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition duration-300"
-            >
-              Cerrar Sesión
-            </button>
+            <div className="flex items-center space-x-4">
+              <h1 className="text-2xl font-bold text-gray-800">Panel de Administración</h1>
+              <span className="text-sm text-gray-500">The Candy House</span>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2 text-gray-600">
+                <FaUser className="w-4 h-4" />
+                <span className="text-sm">{session.user.name}</span>
+                <span className="text-xs text-gray-400">({session.user.email})</span>
+              </div>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleSignOut}
+                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-all duration-300 flex items-center space-x-2"
+              >
+                <FaSignOutAlt className="w-4 h-4" />
+                <span>Cerrar Sesión</span>
+              </motion.button>
+            </div>
           </div>
         </div>
       </div>
       
       <div className="container mx-auto px-4 py-8">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-4">Gestión de Contenido</h2>
+          <motion.div 
+            whileHover={{ scale: 1.02 }}
+            className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            <div className="flex items-center mb-4">
+              <FaCog className="w-6 h-6 text-blue-600 mr-3" />
+              <h2 className="text-xl font-semibold">Gestión de Contenido</h2>
+            </div>
             <p className="text-gray-600 mb-4">Administra el contenido del sitio web</p>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">
+            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 w-full">
               Gestionar
             </button>
-          </div>
+          </motion.div>
           
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-4">Comentarios</h2>
+          <motion.div 
+            whileHover={{ scale: 1.02 }}
+            className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            <div className="flex items-center mb-4">
+              <FaComments className="w-6 h-6 text-green-600 mr-3" />
+              <h2 className="text-xl font-semibold">Comentarios</h2>
+            </div>
             <p className="text-gray-600 mb-4">Revisa y modera los comentarios</p>
-            <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition duration-300">
+            <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-300 w-full">
               Ver Comentarios
             </button>
-          </div>
+          </motion.div>
           
-          <div className="bg-white p-6 rounded-lg shadow">
-            <h2 className="text-xl font-semibold mb-4">Estadísticas</h2>
+          <motion.div 
+            whileHover={{ scale: 1.02 }}
+            className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            <div className="flex items-center mb-4">
+              <FaChartBar className="w-6 h-6 text-purple-600 mr-3" />
+              <h2 className="text-xl font-semibold">Estadísticas</h2>
+            </div>
             <p className="text-gray-600 mb-4">Visualiza las estadísticas del sitio</p>
-            <button className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition duration-300">
+            <button className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition duration-300 w-full">
               Ver Stats
             </button>
-          </div>
+          </motion.div>
+          
+          <motion.div 
+            whileHover={{ scale: 1.02 }}
+            className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            <div className="flex items-center mb-4">
+              <FaImages className="w-6 h-6 text-amber-600 mr-3" />
+              <h2 className="text-xl font-semibold">Galería</h2>
+            </div>
+            <p className="text-gray-600 mb-4">Gestiona las imágenes de la galería</p>
+            <button className="bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition duration-300 w-full">
+              Gestionar Fotos
+            </button>
+          </motion.div>
         </div>
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+  
+  // Si no está autenticado, redirigir al login
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/admin/login',
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session,
+    },
+  };
 }
