@@ -1,0 +1,362 @@
+[
+  {
+    "id": 1,
+    "titulo": "Cachorro Adorable #1",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-01.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 2,
+    "titulo": "Cachorro Adorable #2",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-02.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 3,
+    "titulo": "Cachorro Adorable #3",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-03.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 4,
+    "titulo": "Cachorro Adorable #4",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-04.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 5,
+    "titulo": "Cachorro Adorable #5",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-05.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 6,
+    "titulo": "Cachorro Adorable #6",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-06.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 7,
+    "titulo": "Cachorro Adorable #7",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-07.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 8,
+    "titulo": "Cachorro Adorable #8",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-08.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 9,
+    "titulo": "Cachorro Adorable #9",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-09.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 10,
+    "titulo": "Cachorro Adorable #10",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-10.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 11,
+    "titulo": "Cachorro Adorable #11",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-11.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 12,
+    "titulo": "Cachorro Adorable #12",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-12.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 13,
+    "titulo": "Cachorro Adorable #13",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-13.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 14,
+    "titulo": "Cachorro Adorable #14",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-14.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 15,
+    "titulo": "Cachorro Adorable #15",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-15.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 16,
+    "titulo": "Cachorro Adorable #16",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-16.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 17,
+    "titulo": "Cachorro Adorable #17",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-17.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 18,
+    "titulo": "Cachorro Adorable #18",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-18.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 19,
+    "titulo": "Cachorro Adorable #19",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-19.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 20,
+    "titulo": "Cachorro Adorable #20",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-20.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 21,
+    "titulo": "Cachorro Adorable #21",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-21.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 22,
+    "titulo": "Cachorro Adorable #22",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-22.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 23,
+    "titulo": "Cachorro Adorable #23",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-23.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 24,
+    "titulo": "Cachorro Adorable #24",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-24.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 25,
+    "titulo": "Cachorro Adorable #25",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-25.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 26,
+    "titulo": "Cachorro Adorable #26",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-26.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 27,
+    "titulo": "Cachorro Adorable #27",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-27.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 28,
+    "titulo": "Cachorro Adorable #28",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-28.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 29,
+    "titulo": "Cachorro Adorable #29",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-29.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 30,
+    "titulo": "Cachorro Adorable #30",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-30.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 31,
+    "titulo": "Cachorro Adorable #31",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-31.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 32,
+    "titulo": "Cachorro Adorable #32",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-32.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 33,
+    "titulo": "Cachorro Adorable #33",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-33.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 34,
+    "titulo": "Cachorro Adorable #34",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-34.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 35,
+    "titulo": "Cachorro Adorable #35",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-35.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 36,
+    "titulo": "Cachorro Adorable #36",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-36.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 37,
+    "titulo": "Cachorro Adorable #37",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-37.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 38,
+    "titulo": "Cachorro Adorable #38",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-38.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 39,
+    "titulo": "Cachorro Adorable #39",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-39.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 40,
+    "titulo": "Cachorro Adorable #40",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-40.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 41,
+    "titulo": "Cachorro Adorable #41",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-41.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 42,
+    "titulo": "Cachorro Adorable #42",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-42.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 43,
+    "titulo": "Cachorro Adorable #43",
+    "descripcion": "Hermoso cachorro de The Candy House",
+    "imagen": "/images/galeria/cachorro-43.jpg",
+    "raza": "mixto",
+    "categoria": "cachorro"
+  },
+  {
+    "id": 44,
+    "titulo": "Schnauzer Miniatura",
+    "descripcion": "Hermoso ejemplar de Schnauzer Miniatura",
+    "imagen": "/images/razas/schnauzer/schnauzer-main.jpg",
+    "raza": "schnauzer",
+    "categoria": "adulto"
+  },
+  {
+    "id": 45,
+    "titulo": "Cocker Spaniel Inglés",
+    "descripcion": "Elegante Cocker Spaniel Inglés",
+    "imagen": "/images/razas/cocker/cocker-main.jpg",
+    "raza": "cocker",
+    "categoria": "adulto"
+  }
+]

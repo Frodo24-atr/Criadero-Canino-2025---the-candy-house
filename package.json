@@ -1,0 +1,26 @@
+{
+  "name": "the-candy-house",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.0",
+    "firebase": "^10.0.0",
+    "framer-motion": "^12.23.12",
+    "i18next": "^23.0.0",
+    "next": "13.4.12",
+    "next-i18next": "^14.0.0",
+    "next-intl": "^4.3.4",
+    "postcss": "^8.4.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-icons": "^4.12.0",
+    "react-rating-stars-component": "^2.2.0",
+    "tailwindcss": "^3.3.0"
+  }
+}
