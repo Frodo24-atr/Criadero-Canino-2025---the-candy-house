@@ -1,20 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaTimes, FaChevronLeft, FaChevronRight, FaHeart } from 'react-icons/fa';
+import { FaTimes, FaChevronLeft, FaChevronRight, FaHeart, FaEye, FaImages } from 'react-icons/fa';
 import galeriaData from '../data/galeria.json';
 
 export default function GaleriaFotos() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [filter, setFilter] = useState('todos');
+  const [visibleCount, setVisibleCount] = useState(12); // Mostrar 12 fotos inicialmente
 
-  const filteredImages = galeriaData.filter(imagen => {
-    if (filter === 'todos') return true;
-    return imagen.raza === filter;
-  });
+  // Filtrar imágenes basado en el filtro seleccionado
+  const filteredImages = useMemo(() => {
+    return galeriaData.filter(imagen => {
+      if (filter === 'todos') return true;
+      if (filter === 'cachorro') return imagen.categoria === 'cachorro';
+      return imagen.raza === filter;
+    });
+  }, [filter]);
+
+  // Imágenes visibles (con paginación)
+  const visibleImages = useMemo(() => {
+    return filteredImages.slice(0, visibleCount);
+  }, [filteredImages, visibleCount]);
+
+  // Función para cargar más fotos
+  const loadMoreImages = () => {
+    setVisibleCount(prev => Math.min(prev + 12, filteredImages.length));
+  };
+
+  // Verificar si hay más imágenes para cargar
+  const hasMoreImages = visibleCount < filteredImages.length;
+
+  // Resetear contador visible cuando cambia el filtro
+  const handleFilterChange = (newFilter) => {
+    setFilter(newFilter);
+    setVisibleCount(12);
+  };
 
   const openModal = (imagen, index) => {
-    setSelectedImage({ ...imagen, index });
+    // Encontrar el índice real en la lista filtrada completa
+    const realIndex = filteredImages.findIndex(img => img.id === imagen.id);
+    setSelectedImage({ ...imagen, index: realIndex });
   };
 
   const closeModal = () => {
@@ -64,6 +90,28 @@ export default function GaleriaFotos() {
           </p>
         </motion.div>
 
+        {/* Información de la galería */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          viewport={{ once: true }}
+          className="flex flex-wrap justify-center items-center gap-4 mb-8"
+        >
+          <div className="flex items-center text-gray-600">
+            <FaImages className="w-5 h-5 mr-2 text-amber-500" />
+            <span className="text-sm font-medium">
+              Mostrando {visibleImages.length} de {filteredImages.length} fotos
+            </span>
+          </div>
+          {filter !== 'todos' && (
+            <div className="flex items-center text-gray-500">
+              <FaEye className="w-4 h-4 mr-2" />
+              <span className="text-sm">Filtro activo: {filters.find(f => f.key === filter)?.label}</span>
+            </div>
+          )}
+        </motion.div>
+
         {/* Filtros */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -75,7 +123,7 @@ export default function GaleriaFotos() {
           {filters.map((filterOption) => (
             <button
               key={filterOption.key}
-              onClick={() => setFilter(filterOption.key)}
+              onClick={() => handleFilterChange(filterOption.key)}
               className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 ${
                 filter === filterOption.key
                   ? 'bg-amber-500 text-white shadow-lg transform scale-105'
@@ -94,7 +142,7 @@ export default function GaleriaFotos() {
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
         >
           <AnimatePresence>
-            {filteredImages.map((imagen, index) => (
+            {visibleImages.map((imagen, index) => (
               <motion.div
                 key={imagen.id}
                 layout
@@ -142,6 +190,62 @@ export default function GaleriaFotos() {
             ))}
           </AnimatePresence>
         </motion.div>
+
+        {/* Botón "Cargar más fotos" */}
+        {hasMoreImages && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="flex flex-col items-center mt-12"
+          >
+            <div className="text-center mb-6">
+              <p className="text-gray-600 mb-2">
+                Mostrando {visibleImages.length} de {filteredImages.length} fotos
+              </p>
+              <div className="w-64 bg-gray-200 rounded-full h-2 overflow-hidden">
+                <motion.div
+                  className="h-2 bg-gradient-to-r from-amber-400 to-amber-600 rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${(visibleImages.length / filteredImages.length) * 100}%` }}
+                  transition={{ duration: 0.5 }}
+                />
+              </div>
+            </div>
+            
+            <motion.button
+              onClick={loadMoreImages}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white px-8 py-4 rounded-2xl font-semibold text-lg flex items-center space-x-3 transition-all duration-300 shadow-lg hover:shadow-xl"
+            >
+              <FaImages className="w-5 h-5" />
+              <span>Ver más fotos ({filteredImages.length - visibleImages.length} restantes)</span>
+            </motion.button>
+            
+            <p className="text-sm text-gray-500 mt-3">
+              Se cargarán 12 fotos adicionales
+            </p>
+          </motion.div>
+        )}
+
+        {/* Mensaje cuando no hay más fotos */}
+        {!hasMoreImages && filteredImages.length > 12 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-center mt-12 py-8"
+          >
+            <div className="inline-flex items-center px-6 py-3 bg-green-100 text-green-800 rounded-full">
+              <FaHeart className="w-4 h-4 mr-2" />
+              <span className="font-medium">¡Has visto todas las fotos! 🐶</span>
+            </div>
+            <p className="text-gray-600 mt-3">
+              Total: {filteredImages.length} adorables fotos en esta categoría
+            </p>
+          </motion.div>
+        )}
 
         {filteredImages.length === 0 && (
           <motion.div
