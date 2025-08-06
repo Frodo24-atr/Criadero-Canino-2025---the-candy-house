@@ -1,14 +1,14 @@
 import React from 'react';
+import Navbar from '../components/Navbar-simple';
+import Footer from '../components/Footer';
+import SEO from '../components/SEO';
 import Hero from '../components/Hero';
 import SobreNosotros from '../components/SobreNosotros';
 import GaleriaRazas from '../components/GaleriaRazas';
 import GaleriaFotos from '../components/GaleriaFotos';
 import Testimonios from '../components/Testimonios';
 import Contacto from '../components/Contacto';
-import Footer from '../components/Footer';
 import BotonWhatsApp from '../components/BotonWhatsApp';
-import Navbar from '../components/Navbar';
-import SEO from '../components/SEO';
 
 export default function Home() {
   const homeSchema = {
@@ -97,15 +97,25 @@ export default function Home() {
         schema={homeSchema}
       />
 
-      <div className="min-h-screen">
+      <div className="min-h-screen overflow-hidden">
         <Navbar />
-        <main>
-          <Hero />
-          <SobreNosotros />
-          <GaleriaRazas />
-          <GaleriaFotos />
+        <main className="w-full overflow-hidden">
+          <section id="hero">
+            <Hero />
+          </section>
+          <section id="sobre-nosotros">
+            <SobreNosotros />
+          </section>
+          <section id="razas">
+            <GaleriaRazas />
+          </section>
+          <section id="galeria">
+            <GaleriaFotos />
+          </section>
           <Testimonios />
-          <Contacto />
+          <section id="contacto">
+            <Contacto />
+          </section>
         </main>
         <Footer />
         <BotonWhatsApp />

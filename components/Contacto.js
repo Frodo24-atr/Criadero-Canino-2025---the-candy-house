@@ -34,10 +34,13 @@ export default function Contacto() {
   };
 
   const abrirWhatsApp = () => {
-    const numero = "5411642355420";
-    const mensaje = "Hola! Me interesa conocer más sobre los cachorros disponibles en The Candy House.";
-    const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
-    window.open(url, '_blank');
+    if (typeof window !== 'undefined') {
+      // Número corregido para Argentina con formato correcto
+      const numero = "5491164235420"; // 54 + 9 + 11 + número
+      const mensaje = "Hola! Me interesa conocer más sobre los cachorros disponibles en The Candy House.";
+      const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+      window.open(url, '_blank');
+    }
   };
 
   const contactInfo = [
@@ -45,19 +48,27 @@ export default function Contacto() {
       icon: <FaEnvelope className="w-6 h-6" />,
       titulo: "Email",
       info: "mabelbeatrizgomez71@gmail.com",
-      accion: () => window.location.href = "mailto:mabelbeatrizgomez71@gmail.com"
+      accion: () => {
+        if (typeof window !== 'undefined') {
+          window.location.href = "mailto:mabelbeatrizgomez71@gmail.com";
+        }
+      }
     },
     {
       icon: <FaWhatsapp className="w-6 h-6" />,
       titulo: "WhatsApp",
-      info: "+54 11-6423-5420",
+      info: "+54 9 11 6423-5420",
       accion: abrirWhatsApp
     },
     {
       icon: <FaMapMarkerAlt className="w-6 h-6" />,
       titulo: "Ubicación",
       info: "Avellaneda, Buenos Aires",
-      accion: () => window.open("https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13126.942663614644!2d-58.377726666738184!3d-34.66137801693719!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a3335230bd052b%3A0x9d632a18eea90a31!2sAvellaneda%2C%20Buenos%20Aires%20Province!5e0!3m2!1sen!2sar!4v1754433388629!5m2!1sen!2sar", "_blank")
+      accion: () => {
+        if (typeof window !== 'undefined') {
+          window.open("https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13126.942663614644!2d-58.377726666738184!3d-34.66137801693719!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a3335230bd052b%3A0x9d632a18eea90a31!2sAvellaneda%2C%20Buenos%20Aires%20Province!5e0!3m2!1sen!2sar!4v1754433388629!5m2!1sen!2sar", "_blank");
+        }
+      }
     }
   ];
 

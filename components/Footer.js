@@ -5,14 +5,18 @@ import { FaFacebook, FaInstagram, FaWhatsapp, FaEnvelope, FaHeart, FaPaw } from 
 
 export default function Footer() {
   const abrirWhatsApp = () => {
-    const numero = "5411642355420";
-    const mensaje = "Hola! Me interesa conocer más sobre The Candy House.";
-    const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
-    window.open(url, '_blank');
+    if (typeof window !== 'undefined') {
+      const numero = "5411642355420";
+      const mensaje = "Hola! Me interesa conocer más sobre The Candy House.";
+      const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+      window.open(url, '_blank');
+    }
   };
 
   const enviarEmail = () => {
-    window.location.href = "mailto:mabelbeatrizgomez71@gmail.com";
+    if (typeof window !== 'undefined') {
+      window.location.href = "mailto:mabelbeatrizgomez71@gmail.com";
+    }
   };
 
   return (

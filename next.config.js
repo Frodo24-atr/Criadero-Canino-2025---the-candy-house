@@ -1,14 +1,12 @@
-const { i18n } = require('./next-i18next.config');
-
 /** @type {import('next').NextConfig} */
 module.exports = {
-  i18n: {
-    ...i18n,
-    // Forzar español para Argentina
-    localeDetection: false, // Deshabilitar detección automática
-  },
   reactStrictMode: true,
   swcMinify: true,
+  
+  // Configurar compilador para mejor compatibilidad
+  compiler: {
+    styledComponents: true,
+  },
   
   // Optimizaciones para producción en Hostinger/Vercel
   compress: true,
@@ -68,32 +66,13 @@ module.exports = {
     ];
   },
   
-  // Redirecciones para SEO
+  // Redirecciones simples sin bucles
   async redirects() {
     return [
-      // Redirigir /en a /es para usuarios de Argentina
-      {
-        source: '/en/:path*',
-        destination: '/es/:path*',
-        permanent: true,
-      },
       {
         source: '/admin/dashboard',
         destination: '/admin',
         permanent: true,
-      },
-      // Redirigir URL raíz a español
-      {
-        source: '/',
-        has: [
-          {
-            type: 'header',
-            key: 'accept-language',
-            value: '(.*en.*)',
-          },
-        ],
-        destination: '/es',
-        permanent: false,
       },
     ];
   },
