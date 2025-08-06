@@ -2,28 +2,33 @@ const { i18n } = require('./next-i18next.config');
 
 /** @type {import('next').NextConfig} */
 module.exports = {
-  i18n,
+  i18n: {
+    ...i18n,
+    // Forzar español para Argentina
+    localeDetection: false, // Deshabilitar detección automática
+  },
   reactStrictMode: true,
   swcMinify: true,
   
-  // Optimizaciones para producción en Hostinger
+  // Optimizaciones para producción en Hostinger/Vercel
   compress: true,
   poweredByHeader: false,
   
   // Configuración de imágenes
   images: {
-    domains: ['localhost'],
-    // Agregar tu dominio de Hostinger aquí cuando lo tengas
-    // domains: ['tudominio.com', 'localhost'],
+    domains: ['localhost', 'criadero-canino-2025-the-candy-hous.vercel.app'],
+    formats: ['image/webp', 'image/avif'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
   
   // Variables de entorno públicas
   env: {
     SITE_NAME: 'The Candy House - Criadero Canino',
-    SITE_URL: process.env.NEXTAUTH_URL || 'http://localhost:3000',
+    SITE_URL: process.env.NEXTAUTH_URL || 'https://criadero-canino-2025-the-candy-hous.vercel.app',
   },
   
-  // Headers de seguridad
+  // Headers de seguridad mejorados
   async headers() {
     return [
       {
@@ -41,18 +46,68 @@ module.exports = {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin',
           },
+          {
+            key: 'X-Robots-Tag',
+            value: 'noindex, nofollow',
+          },
+        ],
+      },
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on'
+          },
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload'
+          },
         ],
       },
     ];
   },
   
-  // Redirecciones útiles
+  // Redirecciones para SEO
   async redirects() {
     return [
+      // Redirigir /en a /es para usuarios de Argentina
+      {
+        source: '/en/:path*',
+        destination: '/es/:path*',
+        permanent: true,
+      },
       {
         source: '/admin/dashboard',
         destination: '/admin',
         permanent: true,
+      },
+      // Redirigir URL raíz a español
+      {
+        source: '/',
+        has: [
+          {
+            type: 'header',
+            key: 'accept-language',
+            value: '(.*en.*)',
+          },
+        ],
+        destination: '/es',
+        permanent: false,
+      },
+    ];
+  },
+  
+  // Rewrites para mejorar SEO
+  async rewrites() {
+    return [
+      {
+        source: '/sitemap.xml',
+        destination: '/api/sitemap',
+      },
+      {
+        source: '/robots.txt',
+        destination: '/api/robots',
       },
     ];
   },

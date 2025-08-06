@@ -11,6 +11,20 @@ const PUBLIC_ROUTES = ['/', '/razas', '/contacto', '/auth', '/api/auth/admin-log
 export function middleware(request) {
   const { pathname } = request.nextUrl;
   
+  // Forzar redirect de /en a /es para usuarios de Argentina/Latino América
+  if (pathname.startsWith('/en')) {
+    const url = request.nextUrl.clone();
+    url.pathname = pathname.replace('/en', '/es');
+    return NextResponse.redirect(url);
+  }
+  
+  // Si acceden a la raíz sin idioma, redirigir a /es
+  if (pathname === '/') {
+    const url = request.nextUrl.clone();
+    url.pathname = '/es';
+    return NextResponse.redirect(url);
+  }
+  
   // Permitir rutas públicas
   if (PUBLIC_ROUTES.some(route => pathname.startsWith(route))) {
     return NextResponse.next();
