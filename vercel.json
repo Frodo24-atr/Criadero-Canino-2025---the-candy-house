@@ -1,16 +1,4 @@
 {
-  "redirects": [
-    {
-      "source": "/en/(.*)",
-      "destination": "/es/$1",
-      "permanent": true
-    },
-    {
-      "source": "/",
-      "destination": "/es",
-      "permanent": true
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",
