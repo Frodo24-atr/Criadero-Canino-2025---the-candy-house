@@ -1,21 +1,14 @@
 {
-  "version": 2,
-  "builds": [
+  "redirects": [
     {
-      "src": "package.json",
-      "use": "@vercel/next"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/en/(.*)",
-      "dest": "/es/$1",
-      "status": 301
+      "source": "/en/(.*)",
+      "destination": "/es/$1",
+      "permanent": true
     },
     {
-      "src": "^/$",
-      "dest": "/es",
-      "status": 301
+      "source": "/",
+      "destination": "/es",
+      "permanent": true
     }
   ],
   "headers": [
@@ -54,8 +47,5 @@
     "pages/api/**/*.js": {
       "maxDuration": 10
     }
-  },
-  "env": {
-    "SITE_URL": "https://criadero-canino-2025-the-candy-hous.vercel.app"
   }
 }
