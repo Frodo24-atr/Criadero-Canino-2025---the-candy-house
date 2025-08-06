@@ -10,36 +10,28 @@ export const authOptions = {
   ],
   callbacks: {
     async jwt({ token, user, account, profile }) {
-      // Persist the OAuth access_token and or the user id to the token right after signin
       if (account) {
         token.accessToken = account.access_token
       }
       return token
     },
     async session({ session, token }) {
-      // Send properties to the client, like an access_token and user id from a provider.
       session.accessToken = token.accessToken
+      // Agregar información del usuario para comentarios
+      session.user.canComment = true
       return session
     },
     async signIn({ user, account, profile, email, credentials }) {
-      // Solo permitir emails específicos del criadero
-      const allowedEmails = [
-        'admin@thecandyhouse.com',
-        'info@thecandyhouse.com',
-        // Agregar emails autorizados aquí
-      ];
-      
-      // Para desarrollo, permitir cualquier email de Gmail
-      if (process.env.NODE_ENV === 'development') {
-        return true;
+      // Para comentarios públicos, permitir cualquier cuenta de Google
+      if (account?.provider === 'google') {
+        return true; // Permitir cualquier usuario de Google para comentar
       }
-      
-      return allowedEmails.includes(user.email);
+      return false;
     },
   },
   pages: {
-    signIn: '/admin/login',
-    error: '/admin/auth-error',
+    signIn: '/auth/signin', // Página separada para usuarios regulares
+    error: '/auth/error',
   },
   session: {
     strategy: 'jwt',
