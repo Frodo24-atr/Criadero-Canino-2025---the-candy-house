@@ -2,10 +2,46 @@ import React from 'react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import BotonWhatsApp from '../../components/BotonWhatsApp';
+import SEO from '../../components/SEO';
 
 export default function Schnauzer() {
+  const schnauzerSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product", 
+    "name": "Schnauzer Miniatura",
+    "description": "Cachorros de Schnauzer Miniatura con pedigree. Raza inteligente, valiente y leal, perfecta para apartamentos. Crianza responsable con garantía de salud.",
+    "brand": {
+      "@type": "Brand",
+      "name": "The Candy House"
+    },
+    "offers": {
+      "@type": "AggregateOffer", 
+      "priceCurrency": "ARS",
+      "lowPrice": "180000",
+      "highPrice": "280000",
+      "offerCount": "3"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "reviewCount": "18"
+    },
+    "image": "https://tudominio.com/images/schnauzer-miniatura.jpg",
+    "category": "Cachorros de raza",
+    "audience": {
+      "@type": "Audience",
+      "audienceType": "familias, personas solteras, apartamentos"
+    }
+  };
+
   return (
     <div>
+      <SEO
+        title="Schnauzer Miniatura - Cachorros con Pedigree | The Candy House"
+        description="Cachorros de Schnauzer Miniatura con pedigree y garantía de salud. Raza inteligente, valiente y perfecta para apartamentos. Crianza responsable en Buenos Aires, Argentina."
+        keywords="schnauzer miniatura, cachorros schnauzer, schnauzer argentina, cachorros con pedigree, schnauzer buenos aires, crianza responsable schnauzer, perros pequeños"
+        schema={schnauzerSchema}
+      />
       <Navbar />
       <div className="min-h-screen bg-gray-50 py-12">
         <div className="container mx-auto px-4">

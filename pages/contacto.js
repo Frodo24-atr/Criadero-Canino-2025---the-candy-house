@@ -2,8 +2,34 @@ import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import BotonWhatsApp from '../components/BotonWhatsApp';
+import SEO from '../components/SEO';
 
 export default function Contacto() {
+  const contactSchema = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Contacto - The Candy House",
+    "description": "Contacta con The Candy House para consultas sobre cachorros disponibles, visitas al criadero y asesoramiento especializado.",
+    "mainEntity": {
+      "@type": "LocalBusiness",
+      "name": "The Candy House",
+      "telephone": "+54-11-1234-5678",
+      "email": "info@tudominio.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Buenos Aires",
+        "addressRegion": "Buenos Aires", 
+        "addressCountry": "AR"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "09:00",
+        "closes": "18:00"
+      }
+    }
+  };
+
   const [formData, setFormData] = useState({
     nombre: '',
     email: '',
@@ -27,6 +53,12 @@ export default function Contacto() {
 
   return (
     <div>
+      <SEO
+        title="Contacto - The Candy House | Consultas sobre Cachorros Disponibles"
+        description="Contacta con The Candy House para consultas sobre cachorros Cocker Spaniel y Schnauzer disponibles, visitas al criadero y asesoramiento especializado. Atención personalizada en Buenos Aires."
+        keywords="contacto criadero, consultas cachorros, visita criadero, the candy house contacto, cocker spaniel disponibles, schnauzer disponibles, buenos aires"
+        schema={contactSchema}
+      />
       <Navbar />
       <div className="min-h-screen bg-gray-50 py-12">
         <div className="container mx-auto px-4">

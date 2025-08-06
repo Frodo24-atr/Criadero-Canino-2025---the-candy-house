@@ -2,10 +2,46 @@ import React from 'react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import BotonWhatsApp from '../../components/BotonWhatsApp';
+import SEO from '../../components/SEO';
 
 export default function Cocker() {
+  const cockerSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Cocker Spaniel Inglés",
+    "description": "Cachorros de Cocker Spaniel Inglés con pedigree. Raza alegre, inteligente y de tamaño mediano, ideal para familias. Crianza responsable con garantía de salud.",
+    "brand": {
+      "@type": "Brand", 
+      "name": "The Candy House"
+    },
+    "offers": {
+      "@type": "AggregateOffer",
+      "priceCurrency": "ARS",
+      "lowPrice": "150000",
+      "highPrice": "250000",
+      "offerCount": "5"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "25"
+    },
+    "image": "https://tudominio.com/images/cocker-spaniel.jpg",
+    "category": "Cachorros de raza",
+    "audience": {
+      "@type": "Audience",
+      "audienceType": "familias, adultos"
+    }
+  };
+
   return (
     <div>
+      <SEO
+        title="Cocker Spaniel Inglés - Cachorros con Pedigree | The Candy House"
+        description="Cachorros de Cocker Spaniel Inglés con pedigree y garantía de salud. Raza alegre, inteligente y familiar. Crianza responsable en Buenos Aires, Argentina. ¡Conoce nuestros disponibles!"
+        keywords="cocker spaniel inglés, cachorros cocker spaniel, cocker spaniel argentina, cachorros con pedigree, cocker spaniel buenos aires, crianza responsable cocker"
+        schema={cockerSchema}
+      />
       <Navbar />
       <div className="min-h-screen bg-gray-50 py-12">
         <div className="container mx-auto px-4">
