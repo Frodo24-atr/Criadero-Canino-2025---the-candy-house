@@ -6,7 +6,7 @@ import Hero from '../components/Hero';
 import SobreNosotros from '../components/SobreNosotros';
 import GaleriaRazas from '../components/GaleriaRazas';
 import GaleriaFotos from '../components/GaleriaFotos';
-import Testimonios from '../components/Testimonios';
+import TestimoniosSinLogin from '../components/TestimoniosSinLogin';
 import Contacto from '../components/Contacto';
 import BotonWhatsApp from '../components/BotonWhatsApp';
 
@@ -112,7 +112,7 @@ export default function Home() {
           <section id="galeria">
             <GaleriaFotos />
           </section>
-          <Testimonios />
+          <TestimoniosSinLogin />
           <section id="contacto">
             <Contacto />
           </section>

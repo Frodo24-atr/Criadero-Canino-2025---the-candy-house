@@ -78,20 +78,27 @@ export default async function handler(req, res) {
   else if (req.method === 'PUT') {
     // Actualizar comentario (aprobar/rechazar)
     try {
-      const { id, aprobado } = req.body;
+      const { id, accion, aprobado } = req.body;
       
-      if (!id || typeof aprobado !== 'boolean') {
-        return res.status(400).json({ error: 'ID y estado de aprobación son requeridos' });
+      if (!id) {
+        return res.status(400).json({ error: 'ID es requerido' });
       }
 
       const comentarios = leerComentarios();
-      const index = comentarios.findIndex(c => c.id === parseInt(id));
+      const index = comentarios.findIndex(c => c.id === parseInt(id) || c.id === id);
       
       if (index === -1) {
         return res.status(404).json({ error: 'Comentario no encontrado' });
       }
 
-      comentarios[index].aprobado = aprobado;
+      // Manejar tanto el formato nuevo (accion) como el anterior (aprobado)
+      if (accion) {
+        comentarios[index].aprobado = accion === 'aprobar';
+      } else if (typeof aprobado === 'boolean') {
+        comentarios[index].aprobado = aprobado;
+      } else {
+        return res.status(400).json({ error: 'Acción o estado de aprobación requerido' });
+      }
       
       if (escribirComentarios(comentarios)) {
         res.status(200).json({ success: true, comentario: comentarios[index] });
@@ -112,7 +119,7 @@ export default async function handler(req, res) {
       }
 
       const comentarios = leerComentarios();
-      const index = comentarios.findIndex(c => c.id === parseInt(id));
+      const index = comentarios.findIndex(c => c.id === parseInt(id) || c.id === id);
       
       if (index === -1) {
         return res.status(404).json({ error: 'Comentario no encontrado' });

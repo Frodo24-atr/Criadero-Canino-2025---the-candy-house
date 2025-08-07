@@ -20,9 +20,6 @@ export default function Admin() {
         
         if (data.authenticated) {
           setUser(data.user);
-          if (activeSection === 'comentarios') {
-            loadComentarios();
-          }
         } else {
           router.push('/admin/login');
         }
@@ -35,26 +32,42 @@ export default function Admin() {
     };
 
     checkAuth();
-  }, [router, activeSection]);
+  }, [router]);
 
-  // Cargar comentarios
-  const loadComentarios = async () => {
-    setLoadingComentarios(true);
-    try {
-      const response = await fetch('/api/comentarios');
-      const data = await response.json();
-      setComentarios(data);
-    } catch (error) {
-      console.error('Error cargando comentarios:', error);
-    } finally {
-      setLoadingComentarios(false);
+  // Cargar comentarios cuando se selecciona la sección de comentarios
+  useEffect(() => {
+    if (user && activeSection === 'comentarios') {
+      const loadData = async () => {
+        setLoadingComentarios(true);
+        try {
+          const response = await fetch('/api/comentarios-sin-login', {
+            method: 'GET'
+          });
+          const data = await response.json();
+          
+          // El API de comentarios-sin-login devuelve un objeto con comentarios
+          if (data.comentarios && Array.isArray(data.comentarios)) {
+            setComentarios(data.comentarios);
+          } else if (Array.isArray(data)) {
+            setComentarios(data);
+          } else {
+            setComentarios([]);
+          }
+        } catch (error) {
+          console.error('Error cargando comentarios:', error);
+          setComentarios([]);
+        } finally {
+          setLoadingComentarios(false);
+        }
+      };
+      loadData();
     }
-  };
+  }, [activeSection, user]);
 
   // Aprobar comentario
   const aprobarComentario = async (id) => {
     try {
-      const response = await fetch('/api/comentarios', {
+      const response = await fetch('/api/comentarios-sin-login', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -66,47 +79,28 @@ export default function Admin() {
       });
 
       if (response.ok) {
+        // Actualizar el estado local
         setComentarios(prev => 
-          prev.map(c => c.id === id ? { ...c, aprobado: true } : c)
+          prev.map(c => c.id === id ? { ...c, aprobado: true, estado: 'aprobado' } : c)
         );
+        
+        // Mostrar mensaje de éxito
+        alert('¡Comentario aprobado! Ahora aparecerá en la página principal.');
       }
     } catch (error) {
       console.error('Error aprobando comentario:', error);
-    }
-  };
-
-  // Rechazar comentario
-  const rechazarComentario = async (id) => {
-    try {
-      const response = await fetch('/api/comentarios', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          id,
-          accion: 'rechazar'
-        }),
-      });
-
-      if (response.ok) {
-        setComentarios(prev => 
-          prev.map(c => c.id === id ? { ...c, aprobado: false } : c)
-        );
-      }
-    } catch (error) {
-      console.error('Error rechazando comentario:', error);
+      alert('Error al aprobar el comentario. Por favor intenta de nuevo.');
     }
   };
 
   // Eliminar comentario
   const eliminarComentario = async (id) => {
-    if (!confirm('¿Estás seguro de que quieres eliminar este comentario?')) {
+    if (!confirm('¿Estás seguro de que quieres eliminar este comentario? Esta acción no se puede deshacer.')) {
       return;
     }
 
     try {
-      const response = await fetch('/api/comentarios', {
+      const response = await fetch('/api/comentarios-sin-login', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -116,9 +110,13 @@ export default function Admin() {
 
       if (response.ok) {
         setComentarios(prev => prev.filter(c => c.id !== id));
+        alert('Comentario eliminado exitosamente.');
+      } else {
+        alert('Error al eliminar el comentario. Por favor intenta de nuevo.');
       }
     } catch (error) {
       console.error('Error eliminando comentario:', error);
+      alert('Error al eliminar el comentario. Por favor intenta de nuevo.');
     }
   };
 
@@ -150,7 +148,28 @@ export default function Admin() {
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-gray-800">Gestión de Comentarios</h2>
         <button
-          onClick={loadComentarios}
+          onClick={async () => {
+            setLoadingComentarios(true);
+            try {
+              const response = await fetch('/api/comentarios-sin-login', {
+                method: 'GET'
+              });
+              const data = await response.json();
+              
+              if (data.comentarios && Array.isArray(data.comentarios)) {
+                setComentarios(data.comentarios);
+              } else if (Array.isArray(data)) {
+                setComentarios(data);
+              } else {
+                setComentarios([]);
+              }
+            } catch (error) {
+              console.error('Error cargando comentarios:', error);
+              setComentarios([]);
+            } finally {
+              setLoadingComentarios(false);
+            }
+          }}
           className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300"
         >
           Actualizar
@@ -164,20 +183,25 @@ export default function Admin() {
         </div>
       ) : (
         <div className="grid gap-4">
-          {comentarios.map((comentario) => (
+          {comentarios.map((comentario) => {
+            // Determinar estado del comentario
+            const isApproved = comentario.aprobado === true || comentario.estado === 'aprobado';
+            const isPending = comentario.estado === 'pendiente' || (!comentario.hasOwnProperty('aprobado') && !comentario.estado);
+            
+            return (
             <div key={comentario.id} className={`bg-white p-6 rounded-xl shadow-lg border-l-4 ${
-              comentario.aprobado ? 'border-green-500' : 'border-yellow-500'
+              isApproved ? 'border-green-500' : 'border-yellow-500'
             }`}>
               <div className="flex justify-between items-start mb-4">
                 <div className="flex-1">
                   <div className="flex items-center space-x-2 mb-2">
                     <h3 className="font-semibold text-gray-800">{comentario.nombre}</h3>
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      comentario.aprobado 
+                      isApproved 
                         ? 'bg-green-100 text-green-800' 
                         : 'bg-yellow-100 text-yellow-800'
                     }`}>
-                      {comentario.aprobado ? 'Aprobado' : 'Pendiente'}
+                      {isApproved ? 'Aprobado' : 'Pendiente'}
                     </span>
                   </div>
                   <p className="text-sm text-gray-600 mb-2">{comentario.email}</p>
@@ -194,27 +218,19 @@ export default function Admin() {
                       ({comentario.calificacion}/5)
                     </span>
                   </div>
-                  <p className="text-gray-700 mb-3">{comentario.mensaje}</p>
+                  <p className="text-gray-700 mb-3">{comentario.comentario || comentario.mensaje}</p>
                   <p className="text-xs text-gray-500">
                     {new Date(comentario.fecha).toLocaleString('es-AR')}
                   </p>
                 </div>
                 <div className="flex flex-col space-y-2 ml-4">
-                  {!comentario.aprobado ? (
+                  {!isApproved && (
                     <button
                       onClick={() => aprobarComentario(comentario.id)}
                       className="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition duration-300 flex items-center space-x-1"
                     >
                       <FaCheck className="w-3 h-3" />
                       <span>Aprobar</span>
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => rechazarComentario(comentario.id)}
-                      className="bg-yellow-600 text-white px-3 py-1 rounded text-sm hover:bg-yellow-700 transition duration-300 flex items-center space-x-1"
-                    >
-                      <FaTimes className="w-3 h-3" />
-                      <span>Rechazar</span>
                     </button>
                   )}
                   <button
@@ -227,7 +243,8 @@ export default function Admin() {
                 </div>
               </div>
             </div>
-          ))}
+            )
+          })}
           {comentarios.length === 0 && (
             <div className="text-center py-8 text-gray-600">
               <FaComments className="w-12 h-12 mx-auto mb-4 text-gray-400" />
